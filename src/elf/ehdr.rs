@@ -45,6 +45,15 @@ impl ELF64_Ehdr {
         self.e_shentsize = make_u16(&buf, 58);
         self.e_shnum = make_u16(&buf, 60);
         self.e_shstrndx = make_u16(&buf, 62);
+
+        if buf[0] != 0x7f || buf[1] != 0x45 || buf[2] != 0x4c || buf[3] != 0x46 {
+            panic!("not an ELF file!");
+        }
+
+        if self.e_shoff == 0 || self.e_shnum > 20 || self.e_shstrndx >= self.e_shnum {
+            println!("{} {} {}", self.e_shoff, self.e_shnum, self.e_shstrndx);
+            panic!("No section headers!");
+        }
     }
 
     pub fn zero_init() -> Self {

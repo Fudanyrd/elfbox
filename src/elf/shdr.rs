@@ -3,7 +3,7 @@
 use std::fs::File;
 use std::io::{Read, Seek, SeekFrom};
 
-use super::ehdr::ELF64_Ehdr;
+use super::{ehdr::ELF64_Ehdr, sym::ELF64_Sym};
 use super::{make_u16, make_u32, make_u64};
 
 #[derive(Clone)]
@@ -77,6 +77,7 @@ impl ELF64_Shdr {
 
         ret += "\"type\": ";
         ret += match self.sh_type {
+            SHT_NULL => " null ",
             SHT_PROGBITS => " prog ",
             SHT_STRTAB => "strtab",
             SHT_SYMTAB => "symtab",
@@ -88,6 +89,28 @@ impl ELF64_Shdr {
         ret += ",\"offset\": ";
         ret += self.sh_offset.to_string().as_str();
         ret += "}";
+
+        ret
+    }
+
+    pub fn data(&self, file: &mut File) -> Vec<u8> {
+        let mut ret: Vec<u8> = vec![0; self.sh_size as usize];
+
+        file.seek(SeekFrom::Start(self.sh_offset)).unwrap();
+        file.read_exact(ret.as_mut_slice()).unwrap();
+
+        ret
+    }
+
+    pub fn symbols(&self, file: &mut File) -> Vec<ELF64_Sym> {
+        let size = (self.sh_size / 24) as usize;
+        let mut ret: Vec<ELF64_Sym> = vec![ELF64_Sym::zero_init(); size];
+
+        file.seek(SeekFrom::Start(self.sh_offset)).unwrap();
+
+        for i in 0..size {
+            ret[i].load_from(file);
+        }
 
         ret
     }
