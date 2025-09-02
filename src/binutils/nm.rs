@@ -2,7 +2,7 @@ pub use crate::elf::{file::ELF64, strtab::StrTab, sym::ELF64_Sym};
 
 pub fn nm(args: &Vec<String>) {
     let len = args.len();
-    for i in 1..len {
+    for i in 2..len {
         let f = &args[i];
         println!("{}: ", f);
 

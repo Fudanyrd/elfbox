@@ -3,10 +3,10 @@ use std::fs::File;
 
 use rld::elf;
 
-use rld::binutils::nm;
+use rld::binutils::{elfbox_main};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    nm(&args);
+    elfbox_main(&args);
 }
