@@ -50,7 +50,7 @@ impl ELF64_Ehdr {
             panic!("not an ELF file!");
         }
 
-        if self.e_shoff == 0 || self.e_shnum > 20 || self.e_shstrndx >= self.e_shnum {
+        if self.e_shoff == 0 || self.e_shstrndx >= self.e_shnum {
             println!("{} {} {}", self.e_shoff, self.e_shnum, self.e_shstrndx);
             panic!("No section headers!");
         }
