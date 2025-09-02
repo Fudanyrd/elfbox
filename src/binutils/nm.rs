@@ -19,7 +19,7 @@ pub fn nm(args: &Vec<String>) {
                 for symbol in symbols {
                     let symbol_name = elf.symbol_strtab.name(symbol.st_name);
                     if symbol_name.len() > 0 {
-                        println!("{}", symbol_name);
+                        println!("{} ({})", symbol_name, symbol.precedence().to_string());
                     }
                 }
             }

@@ -1,6 +1,7 @@
 pub mod ehdr;
 pub mod file;
 pub mod phdr;
+pub mod rela;
 pub mod shdr;
 pub mod strtab;
 pub mod sym;

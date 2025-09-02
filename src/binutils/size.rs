@@ -1,7 +1,4 @@
-pub use crate::elf::{
-    file::ELF64, 
-    phdr::ELF64_Phdr
-};
+pub use crate::elf::{file::ELF64, phdr::ELF64_Phdr};
 
 pub fn size(args: &Vec<String>) {
     let len = args.len();
