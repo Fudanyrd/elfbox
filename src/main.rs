@@ -11,9 +11,13 @@ fn main() {
     ehdr.load_from(&mut file);
 
     let phdrs = elf::phdr::ELF64_Phdr::headers(&mut file, &ehdr);
-
     for phdr in phdrs {
-        phdr.display();
+        println!("{}", phdr.to_string());
+    }
+
+    let shdrs = elf::shdr::ELF64_Shdr::headers(&mut file, &ehdr);
+    for shdr in shdrs {
+        println!("{}", shdr.to_string());
     }
 
     println!("Hello, world!");

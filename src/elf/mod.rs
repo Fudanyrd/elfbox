@@ -1,5 +1,6 @@
 pub mod ehdr;
 pub mod phdr;
+pub mod shdr;
 
 pub fn make_u16(b: &[u8], offset: u32) -> u16 {
     let mut buf: [u8; 2] = [0; 2];

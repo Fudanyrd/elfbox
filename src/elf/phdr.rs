@@ -6,14 +6,14 @@ use super::{make_u16, make_u32, make_u64};
 
 #[derive(Clone)]
 pub struct ELF64_Phdr {
-    p_type: u32,
-    p_flags: u32,
-    p_off: u64,
-    p_vaddr: u64,
-    p_paddr: u64,
-    p_filesz: u64,
-    p_memsz: u64,
-    p_align: u64,
+    pub p_type: u32,
+    pub p_flags: u32,
+    pub p_off: u64,
+    pub p_vaddr: u64,
+    pub p_paddr: u64,
+    pub p_filesz: u64,
+    pub p_memsz: u64,
+    pub p_align: u64,
 }
 
 /// an executable segment.
@@ -88,7 +88,7 @@ impl ELF64_Phdr {
         ret
     }
 
-    pub fn display(&self) {
+    fn flagstr(&self) -> String {
         let r: String;
         if self.is_readable() {
             r = String::from("R").to_string();
@@ -108,7 +108,12 @@ impl ELF64_Phdr {
             x = String::from(" ").to_string();
         }
 
-        println!("{} {} {}{}{}", self.p_off, self.p_vaddr, r, w, x);
+        return r + &w + &x;
+    }
+
+    pub fn display(&self) {
+        let rwx = self.flagstr();
+        println!("{} {} {}", self.p_off, self.p_vaddr, rwx);
     }
 
     pub fn headers(file: &mut File, ehdr: &ELF64_Ehdr) -> Vec<ELF64_Phdr> {
@@ -120,6 +125,20 @@ impl ELF64_Phdr {
         for i in 0..phnum {
             ret[i].load_from(file);
         }
+
+        ret
+    }
+
+    pub fn to_string(&self) -> String {
+        let mut ret = String::from("Phdr {");
+
+        ret += "\"vaddr\": ";
+        ret += self.p_vaddr.to_string().as_str();
+        ret += ",\"offset\": ";
+        ret += self.p_off.to_string().as_str();
+        ret += ",\"flags\": ";
+        ret += self.flagstr().as_str();
+        ret += "}";
 
         ret
     }
