@@ -1,6 +1,8 @@
 use std::fs::File;
 use std::io::{Read, Seek, SeekFrom};
 
+use super::{make_u64, make_u16, make_u32};
+
 pub struct ELF64_Ehdr {
     e_ident: [u8; 16], // Magic number and other info
     e_type: u16,       // Object file type
@@ -29,9 +31,19 @@ impl ELF64_Ehdr {
             self.e_ident[i] = buf[i];
         }
 
-        self.e_type = u16::from_le_bytes([buf[16], buf[17]]);
-        self.e_machine = u16::from_le_bytes([buf[18], buf[19]]);
-        self.e_version = u32::from_le_bytes([buf[20], buf[21], buf[22], buf[23]]);
+        self.e_type = make_u16(&buf, 16);
+        self.e_machine = make_u16(&buf, 18);
+        self.e_version = make_u32(&buf, 20);
+        self.e_entry = make_u64(&buf, 24);
+        self.e_phoff = make_u64(&buf, 32);
+        self.e_shoff = make_u64(&buf, 40);
+        self.e_flags = make_u32(&buf, 48);
+        self.e_ehsize = make_u16(&buf, 52);
+        self.e_phentsize = make_u16(&buf, 54);
+        self.e_phnum = make_u16(&buf, 56);
+        self.e_shentsize = make_u16(&buf, 58);
+        self.e_shnum = make_u16(&buf, 60);
+        self.e_shstrndx = make_u16(&buf, 62);
     }
 
     pub fn zero_init() -> Self {
