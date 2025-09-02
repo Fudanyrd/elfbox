@@ -1,23 +1,24 @@
 use std::fs::File;
 use std::io::{Read, Seek, SeekFrom};
 
-use super::{make_u64, make_u16, make_u32};
+use super::{make_u16, make_u32, make_u64};
 
+#[derive(Clone)]
 pub struct ELF64_Ehdr {
-    e_ident: [u8; 16], // Magic number and other info
-    e_type: u16,       // Object file type
-    e_machine: u16,    // Architecture
-    e_version: u32,    // Object file version
-    e_entry: u64,      // Entry point virtual address
-    e_phoff: u64,      // Program header table file offset
-    e_shoff: u64,      // Section header table file offset
-    e_flags: u32,      // Processor-specific flags
-    e_ehsize: u16,     // ELF header size in bytes
-    e_phentsize: u16,  // Program header table entry size
-    e_phnum: u16,      // Program header table entry count
-    e_shentsize: u16,  // Section header table entry size
-    e_shnum: u16,      // Section header table entry count
-    e_shstrndx: u16,   // Section header string table index
+    pub e_ident: [u8; 16], // Magic number and other info
+    pub e_type: u16,       // Object file type
+    pub e_machine: u16,    // Architecture
+    pub e_version: u32,    // Object file version
+    pub e_entry: u64,      // Entry point virtual address
+    pub e_phoff: u64,      // Program header table file offset
+    pub e_shoff: u64,      // Section header table file offset
+    pub e_flags: u32,      // Processor-specific flags
+    pub e_ehsize: u16,     // ELF header size in bytes
+    pub e_phentsize: u16,  // Program header table entry size
+    pub e_phnum: u16,      // Program header table entry count
+    pub e_shentsize: u16,  // Section header table entry size
+    pub e_shnum: u16,      // Section header table entry count
+    pub e_shstrndx: u16,   // Section header string table index
 }
 
 impl ELF64_Ehdr {
