@@ -85,7 +85,7 @@ impl ELF64_Sym {
     }
 
     pub fn precedence(&self) -> Precedence {
-        match self.st_info & 0xf {
+        match (self.st_info & 0xf0) >> 4 {
             STB_LOCAL => Precedence::LOCAL,
             STB_GLOBAL => Precedence::GLOBAL,
             STB_WEAK => Precedence::WEAK,
